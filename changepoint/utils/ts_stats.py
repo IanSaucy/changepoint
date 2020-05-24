@@ -9,7 +9,7 @@ from time import time
 from glob import glob
 from functools import partial
 import numpy as np
-import cPickle as pickle
+import pickle as pickle
 
 from joblib import Parallel, delayed
 import more_itertools
@@ -33,13 +33,13 @@ def parallelize_func(iterable, func, chunksz=1, n_jobs=16, *args, **kwargs):
 def smooth(x, window_len=11, window='hanning'):
     """ Smoothen a time series. """
     if x.ndim != 1:
-        raise ValueError, "smooth only accepts 1 dimension arrays."
+        raise ValueError("smooth only accepts 1 dimension arrays.")
     if x.size < window_len:
-        raise ValueError, "Input vector needs to be bigger than window size."
+        raise ValueError("Input vector needs to be bigger than window size.")
     if window_len < 3:
         return x
     if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
-        raise ValueError, "Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'"
+        raise ValueError("Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
 
     s = np.r_[2 * x[0] - x[window_len - 1::-1],
               x, 2 * x[-1] - x[-1:-window_len:-1]]
@@ -58,7 +58,7 @@ def ts_stats_significance(ts, ts_stat_func, null_ts_func, B=1000, permute_fast=F
     stats_ts = ts_stat_func(ts)
     if permute_fast:
         # Permute it in 1 shot
-        null_ts = map(np.random.permutation, np.array([ts, ] * B))
+        null_ts = list(map(np.random.permutation, np.array([ts, ] * B)))
     else:
         null_ts = np.vstack([null_ts_func(ts) for i in np.arange(0, B)])
     stats_null_ts = np.vstack([ts_stat_func(nts) for nts in null_ts])

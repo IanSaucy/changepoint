@@ -26,7 +26,7 @@ test_requirements = [
 
 setup(
     name='changepoint',
-    version='0.1.1',
+    version='0.2.1',
     description='Change point detection in Time series',
     long_description=readme + '\n\n' + history,
     author='Vivek Kulkarni',
